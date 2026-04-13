@@ -49,15 +49,15 @@ Overall rank,Country or region,Score,GDP per capita,Social support,Healthy life 
 ````
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 # Load dataset
 df = pd.read_csv("world_happiness.csv")
 
 print(df.head())
-# Your code starts here
 
-# Select the top 10 countries by Score
+# Task 1: Select and visualize the top 10 countries by Score
 top10 = df.nlargest(10, 'Score')[['Country or region', 'Score']]
 
 # Create the bar plot
@@ -68,13 +68,19 @@ plt.title('Top 10 Happiest Countries (2019)')
 plt.tight_layout()
 plt.show()
 
-# Task: Compare the average GDP per capita between the top 20 and bottom 20 countries by Score.
+# Task 2: Compare the average GDP per capita between the top 20 and bottom 20 countries by Score.
 
 top20GDP = df.nlargest(20, 'Score')[['Country or region', 'Score', 'GDP per capita']]
 bottom20GDP = df.nsmallest(20, 'Score')[['Country or region', 'Score', 'GDP per capita']]
 
 avg_gdp_top = top20GDP['GDP per capita'].mean()
 avg_gdp_bottom = bottom20GDP['GDP per capita'].mean()
+
+print("Top 20 Countries:")
+print(top20GDP['Country or region'].tolist())
+
+print("\nBottom 20 Countries:")
+print(bottom20GDP['Country or region'].tolist())
 
 labels = ['Top 20', 'Bottom 20']
 values = [avg_gdp_top, avg_gdp_bottom]
@@ -84,4 +90,19 @@ plt.bar(labels, values, color = 'green')
 plt.ylabel('Average GDP per Capita')
 plt.title('Average GDP per Capita: Top 20 vs Bottom 20 Countries by Happiness')
 plt.tight_layout()
-plt.show()````
+plt.show()
+
+# Task: Plot Score against Social support to examine their relationship.
+
+plt.figure(figsize=(10, 6))
+plt.scatter(df['Social support'], df['Score'])
+
+m, b = np.polyfit(df['Social support'], df['Score'], 1)
+plt.plot(df['Social support'], m * df['Social support'] + b, color='red')
+
+plt.xlabel('Social Support')
+plt.ylabel('Happiness Score')
+plt.title('Social Support vs Happiness Score (2019)')
+plt.tight_layout()
+plt.show()
+````
