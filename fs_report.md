@@ -105,4 +105,37 @@ plt.ylabel('Happiness Score')
 plt.title('Social Support vs Happiness Score (2019)')
 plt.tight_layout()
 plt.show()
-````
+
+#Task 4: Identify the three indicators (from GDP per capita, Social support, Healthy life expectancy, Freedom to make life choices, Generosity, Perceptions of corruption) most correlated with Score.
+
+indicators = ['GDP per capita', 'Social support', 'Healthy life expectancy', 
+              'Freedom to make life choices', 'Generosity', 'Perceptions of corruption']
+
+correlations = df[indicators + ['Score']].corr()['Score'].drop('Score')
+
+print("Absolute (for ranking):")
+print(correlations.abs().sort_values(ascending=False).head(3))
+
+print("\nActual values (to see direction):")
+print(correlations.sort_values(ascending=False))
+
+#Task 5: Compare the median Healthy life expectancy between countries with Score above 7.0 and those below 5.0.
+
+high_score = df[df['Score']>7.0]
+low_score = df[df['Score']<5.0]
+
+median_hl_high = high_score['Healthy life expectancy'].median()
+median_hl_low = low_score['Healthy life expectancy'].median()
+
+print(f"Median Healthy Life Expectancy - High Score countries (>7.0): {median_hl_high:.2f}")
+print(f"Median Healthy Life Expectancy - Low Score countries (<5.0): {median_hl_low:.2f}")
+
+health_labels = ['High Score (>7.0)', 'Low Score (<5.0)']
+health_values = [median_hl_high, median_hl_low]
+
+plt.figure(figsize = (10,6))
+plt.bar(health_labels, health_values, color = 'Red')
+plt.ylabel('Median Healthy life expectancy')
+plt.title('Healthy Life Expectancy: High vs Low Happiness Countries')
+plt.tight_layout()
+plt.show()````
